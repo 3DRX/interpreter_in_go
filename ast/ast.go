@@ -62,17 +62,6 @@ func (ls *LetStatement) String() string {
 		out.WriteString(ls.Value.String())
 	}
 	out.WriteString(";")
-	// TODO: page 50
-	return out.String()
-}
-
-func (rs *ReturnStatement) String() string {
-	var out bytes.Buffer
-	out.WriteString(rs.TokenLiteral() + " ")
-	if rs.ReturnValue != nil {
-		out.WriteString(rs.ReturnValue.String())
-	}
-	out.WirteString(";")
 	return out.String()
 }
 
@@ -82,6 +71,10 @@ type Identifier struct {
 }
 
 func (i *Identifier) expressionNode() {}
+
+func (i *Identifier) String() string {
+	return i.Value
+}
 
 func (i *Identifier) TokenLiteral() string {
 	return i.Token.Literal
@@ -100,6 +93,11 @@ func (rs *ReturnStatement) TokenLiteral() string {
 
 func (rs *ReturnStatement) String() string {
 	var out bytes.Buffer
+	out.WriteString(rs.TokenLiteral() + " ")
+	if rs.ReturnValue != nil {
+		out.WriteString(rs.ReturnValue.String())
+	}
+	out.WriteString(";")
 	return out.String()
 }
 
@@ -112,4 +110,11 @@ func (es *ExpressionStatement) statementNode() {}
 
 func (es *ExpressionStatement) TokenLiteral() string {
 	return es.Token.Literal
+}
+
+func (es *ExpressionStatement) String() string {
+	if es.Expression != nil {
+		return es.Expression.String()
+	}
+	return ""
 }
